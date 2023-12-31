@@ -39,11 +39,59 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
+  const express = require("express");
   const bodyParser = require('body-parser');
   
   const app = express();
-  
+  const Port= 3000;
+  const todos=[];
+
   app.use(bodyParser.json());
+//this handles the route /todos
+  app.get("/todos",function(req,res){
+    res.json(todos);
+  });
+
+//below code handles the route /todos/:id
+app.get("/todos/:id", function (req,res){
+  // for(i=0;i<todos.length();i++){
+  //   if(todos[i].id==parseInt(req.params.id)){
+  //     const newjson=todos[i];
+  //     res.json(newjson);
+
+  //   }
+    
+  // }
+
+  const todo= todos.find(t=>t.id===req.params.id);
+  res.json(todo);
+});
+
+//below code handles the route /todos with a post request
+app.post("/todos", function(req,res){
+  const newTodo={
+  id:Math.floor(Math.random()*100000),
+  title:req.body.title,
+  description:req.body.description
+  };
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
   
+})
+
+//below code will be used for put request
+app.put("/todos", function(req, res){
+  const itemIndex= todos.find(t=> t.id === parseInt(req.params.id));
+const updatedTodo={
+  id:req.params.id,
+  title:req.body.title,
+  description:req.body.description,
+};
+todos[itemIndex]=updatedTodo;
+res.status(200).json(updatedTodo);
+
+})
+
+  console.log("REached Here");
+  app.listen(3000);
   module.exports = app;

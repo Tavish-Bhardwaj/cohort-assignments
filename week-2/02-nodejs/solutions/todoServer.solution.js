@@ -36,7 +36,7 @@
   const bodyParser = require('body-parser');
   
   const app = express();
-  
+  const port= 3001;
   app.use(bodyParser.json());
   
   let todos = [];
@@ -89,5 +89,5 @@
   app.use((req, res, next) => {
     res.status(404).send();
   });
-  
+  app.listen(3001);
   module.exports = app;
